@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="member">
+
+
+	<insert id="insertMember" parameterType="member">
+		insert into member
+		values(MEMBER_SQ.nextval,#{memberEmail}, #{memberPwd},
+		#{memberName},
+		#{memberPhone},#{memberLevel},null,
+		null,null,null,#{memberToken},null)
+	</insert>
+
+	<insert id="insertPhoto" parameterType="member">
+		insert into member_photo
+		values(#{memberSq},mem_photo_sq.nextVal,
+		#{originalFileName},#{renamedFileName},sysdate)
+
+	</insert>
+	
+	<insert id="insertScrap" parameterType="map">
+	insert into Scrap values(scrap_sq.nextVal, #{memberSq}, #{jobNo}, #{jobTitle},#{company},#{deadline},#{applyMethod})
+	</insert>
+
+	<select id="selectOneMember" parameterType="map"
+		resultMap="memberMap">
+		SELECT * FROM MEMBER WHERE Member_email=#{memberEmail}
+	</select>
+
+	<select id="selectEmailPhone" parameterType="map"
+		resultMap="memberMap">
+		select * from member where member_Email=#{memberEmail} and
+		member_phone=#{memberPhone}
+	</select>
+
+	<select id="selectPhone" parameterType="map"
+		resultMap="memberMap">
+		select * from member where member_phone=#{memberPhone} and
+		member_name=#{memberName}
+	</select>
+
+	<update id="updatePwd" parameterType="member">
+		update member set
+		member_Pwd=#{memberPwd}
+		where
+		member_Email=#{memberEmail}
+	</update>
+
+	<update id="updateInfo" parameterType="member">
+		update member set
+		member_phone=#{memberPhone},
+		member_postcode=#{memberPostCode},
+		member_addr=#{memberAddr},
+		member_addr_dtl=#{memberAddrDtl},
+		member_addr_extra=#{memberAddrExtra},
+		member_position=#{memberPosition}
+		where member_email=#{memberEmail}
+
+	</update>
+	<update id="updatePhoto" parameterType="memberPhoto">
+		update member_photo set
+		RENAMEDFILENAME=#{renamedFileName},
+		ORIGINALFILENAME = #{originalFileName},
+		UPLOADDATE = sysdate
+		where MEMBER_SQ=#{memberSq}
+
+	</update>
+
+	<select parameterType="map" id="selectPhoneNum"
+		resultMap="memberMap">SELECT * FROM MEMBER WHERE MEMBER_PHONE=#{memberPhone}
+	</select>
+
+	<select parameterType="String" id="selectPhoto"
+		resultType="string">
+		select RENAMEDFILENAME from member_photo where
+		member_sq=#{memberSq}
+	</select>
+	
+	<select id="selectScrapList" parameterType="map" resultMap="memberScrap">
+	select *from scrap where member_sq=#{memberSq}
+	</select>
+
+	<delete id="deleteMember" parameterType="String">
+		DELETE FROM MEMBER WHERE
+		MEMBER_EMAIL=#{memberEmail}
+	</delete>
+	
+	<delete id="deleteScrap" parameterType="map">
+	delete from scrap where member_sq=#{memberSq} and job_no=#{jobNo}
+	</delete>
+	
+	<select id="selectScrap" parameterType="map" resultType="_int">
+	select count(*) from scrap where member_sq = #{memberSq}
+	</select>
+
+	<resultMap id="memberMap"
+		type="com.spring.itjobgo.member.model.vo.Member">
+		<result column="MEMBER_SQ" property="memberSq" />
+		<result column="MEMBER_EMAIL" property="memberEmail" />
+		<result column="MEMBER_PWD" property="memberPwd" />
+		<result column="MEMBER_NAME" property="memberName" />
+		<result column="MEMBER_PHONE" property="memberPhone" />
+		<result column="MEMBER_LEVEL" property="memberLevel" />
+		<result column="MEMBER_POSTCODE" property="memberPostCode" />
+		<result column="MEMBER_ADDR" property="memberAddr" />
+		<result column="MEMBER_ADDR_DTL" property="memberAddrDtl" />
+		<result column="MEMBER_ADDR_EXTRA" property="memberAddrExtra" />
+		<result column="MEMBER_TOKEN" property="memberToken" />
+		<result column="MEMBER_POSITION" property="memberPosition" />
+	</resultMap>
+	
+	<resultMap id="memberScrap"
+		type="com.spring.itjobgo.member.model.vo.MemberScrap">
+		<result column="MEMBER_SQ" property="memberSq" />
+		<result column="job_No" property="jobNo" />
+		<result column="scrap_Sq" property="scrapSq" />
+	</resultMap>
+
+	<!-- 이력서 전문가 등록 -->
+	<update id="updateConsultant" parameterType="_int">
+		UPDATE MEMBER SET
+			MEMBER_LEVEL=2
+		WHERE MEMBER_SQ=#{membersSq}
+	</update>
+</mapper>

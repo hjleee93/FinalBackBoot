@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<!-- typealias -->
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<setting name="jdbcTypeForNull" value="NULL" />
+
+	</settings>
+	<typeAliases>
+
+		<typeAlias
+			type="com.spring.itjobgo.portfolio.model.vo.Attachment"
+			alias="attachment" />
+		<typeAlias
+			type="com.spring.itjobgo.meeting.model.vo.Mattachment"
+			alias="mattachment" />
+		<typeAlias
+			type="com.spring.itjobgo.portfolio.model.vo.Comment" alias="comment" />
+		<typeAlias type="com.spring.itjobgo.meeting.model.vo.Mboard"
+			alias="mboard" />
+
+
+		<typeAlias type="com.spring.itjobgo.common.StringArrayType"
+			alias="strarr" />
+
+		<typeAlias type="com.spring.itjobgo.member.model.vo.Member"
+			alias="member" />
+		<typeAlias
+			type="com.spring.itjobgo.member.model.vo.MemberPhoto"
+			alias="memberPhoto" />
+		<typeAlias
+		type="com.spring.itjobgo.member.model.vo.MemberScrap"
+		alias="memberScrap" />
+		
+		<typeAlias
+			type="com.spring.itjobgo.portfolio.model.vo.Pboard" alias="pboard" />
+
+		<typeAlias
+			type="com.spring.itjobgo.community.model.vo.CommunityBoard"
+			alias="communityBoard" />
+
+		<typeAlias
+			type="com.spring.itjobgo.community.model.vo.CB_ATTACHMENT"
+			alias="cb_attachment" />
+
+		<typeAlias type="com.spring.itjobgo.info.model.vo.Info"
+			alias="Info" />
+			
+			<typeAlias type="com.spring.itjobgo.info.model.vo.INFO_ATTACHMENT"
+			alias="info_attachment" />
+			
+		<typeAlias
+			type="com.spring.itjobgo.ref.model.vo.REF_SITE"
+			alias="referenceSite"/>
+		
+		<typeAlias
+			type="com.spring.itjobgo.ref.model.vo.REF_SITE_ATTACHMENT"
+			alias="referenceSiteAttach"/>
+
+		<typeAlias
+			type="com.spring.itjobgo.qna.model.vo.QnaBoard"
+			alias="qnaBoard" />
+
+		<typeAlias
+			type="com.spring.itjobgo.qna.model.vo.QB_ATTACHMENT"
+			alias="qna_attachment" />
+			
+		<typeAlias
+			type="com.spring.itjobgo.qna.model.vo.QB_COMMENT"
+			alias="qbcomment" />			
+			
+		<typeAlias
+			type="com.spring.itjobgo.notice.model.vo.Notice"
+			alias="Notice" />
+
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.Rboard"
+			alias="rboard" />
+
+		<typeAlias
+			type="com.spring.itjobgo.resume.model.vo.RboardAttachment"
+			alias="rboard_attachment" />
+			
+			<typeAlias
+			type="com.spring.itjobgo.community.model.vo.CB_COMMENT"
+			alias="CB_COMMENT" />	
+			
+				<typeAlias type="com.spring.itjobgo.resume.model.vo.Resume"
+			alias="resume" />
+			
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.ResumeAttachment"
+			alias="resume_attachment" />
+			
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.ResumeAbroad"
+			alias="resume_abroad" />
+			
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.ResumeActivity"
+			alias="resume_activity" />
+			
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.ResumeLanguage"
+			alias="resume_language" />
+			
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.ResumeAbroad"
+			alias="resume_abroad" />
+			
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.ResumeLicense"
+			alias="resume_license" />
+			
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.ResumeProject"
+			alias="resume_project" />
+			
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.ResumeSchool"
+			alias="resume_school" />
+			
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.ResumeWork"
+			alias="resume_work" />
+			
+		<typeAlias
+		type="com.spring.itjobgo.notice.model.vo.Notice"
+		alias="Notice" />	
+		
+		<typeAlias
+		type="com.spring.itjobgo.notice.model.vo.NoticeAttachment"
+		alias="NoticeAttachment" />	
+		
+		<typeAlias
+		type="com.spring.itjobgo.notice.model.vo.NoticeComment"
+		alias="NoticeComment" />
+		
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.ResumeAll"
+			alias="resume_all" /> 
+		
+		<typeAlias
+		type="com.spring.itjobgo.ItNews.model.vo.ItnewsAttachment"
+		alias="ItnewsAttachment" />	
+		
+		<typeAlias
+		type="com.spring.itjobgo.ItNews.model.vo.ItNews"
+		alias="ItNews" />	
+		
+		<typeAlias
+		type="com.spring.itjobgo.ItNews.model.vo.ItnewsAttachment"
+		alias="ItnewsAttachment" />	
+		
+		<typeAlias
+		type="com.spring.itjobgo.ItNews.model.vo.ItNews"
+		alias="ItNews" />	
+		
+		<typeAlias
+		type="com.spring.itjobgo.ItNews.model.vo.ItnewsComment"
+		alias="ItnewsComment" />	
+		
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.ResumeList"
+		alias="resume_list" /> 
+		
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.Consult"
+		alias="consult" /> 
+		
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.ConsultAttachment"
+		alias="consult_attachment" /> 
+		
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.ConsultAttachmentAll"
+		alias="consult_attachment_all" /> 
+			
+		<typeAlias type="com.spring.itjobgo.resume.model.vo.RboardComment"
+		alias="rboard_comment" /> 
+	</typeAliases>
+
+</configuration>

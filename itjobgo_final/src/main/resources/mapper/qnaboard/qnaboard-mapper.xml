@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="qnaBoard">
+
+	<select id="selectBoardList"  resultType="qnaBoard">
+		SELECT * FROM QNA_BOARD ORDER BY QBOARD_NO DESC
+	</select>
+	
+<!--  	<resultMap id="qnaBoard"
+			type="com.spring.itjobgo.qna.model.vo.QnaBoard">
+			<result column="QNA_SEQ" property="qnaSeq" />
+			<result column="QNA_CATEGORY" property="qnaCategory" />
+			<result column="QNA_TITLE" property="qnaTitle" />
+			<result column="QNA_WRITER" property="qnaWriter" />
+			<result column="QNA_CONTENT" property="qnaContent" />
+			<result column="QNA_ANSWER_YN" property="qnaAnswerYn" />
+			<result column="QNA_DATE" property="qnaDate" />
+			<result column="BOARD_ORIGINAL_FILEPATH" property="boardOriginalFilepath" />
+			<result column="BOARD_RENAME_FILEPATH" property="boardRenameFilepath" />
+			<result column="MEMBER_NUM" property="memberNum" />
+	</resultMap>	 -->
+	
+	
+	<!-- qna게시판 글 작성  -->
+	<insert id="insertQna" parameterType="qnaBoard">
+	INSERT INTO QNA_BOARD VALUES (
+										SEQ_QNA_NO.NEXTVAL,
+										#{qnaCategory},
+										#{qnaTitle},
+										#{qnaWriter},
+										#{qnaContent},
+										#{qnaAnswerYn},
+										DEFAULT,
+										#{memberNum},
+										1,
+										0
+										)
+	</insert>
+	
+	<!-- 글쓰기 첨부파일 등록  -->
+	<insert id="insertAttachment" parameterType="qna_attachment">
+		INSERT INTO QB_ATTACHMENT VALUES(
+											SEQ_QB_ATTACHMENT_NO.NEXTVAL,
+											#{qboardNo},
+											#{originalfilename},
+											#{renamedfilename},
+											DEFAULT,
+											DEFAULT
+											)
+											
+			<!-- 현재 boardSq의 시퀀스 번호를 알고 싶을때 curraval from dual을 이용해
+			selectKey를 설정한다 -->
+			<selectKey keyProperty="qboardNo" resultType="_int" order="BEFORE">
+	 		SELECT SEQ_QNA_NO.CURRVAL FROM DUAL
+	  		</selectKey>		 
+	</insert>
+	
+	<!-- 첨부파일이 없는 게시글 첨부파일을 등록해 update 하기 -->
+	<insert id="insertAttachment2" parameterType="qna_attachment">
+	INSERT INTO QB_ATTACHMENT VALUES(
+												#{attachmentno},
+												#{qboardNo},
+												#{originalfilename},
+												#{renamedfilename},
+												DEFAULT,
+												DEFAULT				
+											)
+	</insert>
+	
+	<!-- qna게시판 글 상세보기 -->
+	<select id="selectQnaBoardOne" parameterType="_int" resultType="qnaBoard">
+			SELECT * FROM QNA_BOARD WHERE QBOARD_NO=#{qboardNo}
+	</select>
+	
+	<!-- qna게시판 삭제하기 -->
+	<delete id="deleteBoard" parameterType="_int">
+			DELETE FROM QNA_BOARD WHERE QBOARD_NO=#{qboardNo}
+	</delete>
+	
+	<!-- 첨부파일 조회 -->
+	<select id="selectAttach" resultType="qna_attachment" parameterType="_int">
+			SELECT*FROM QB_ATTACHMENT WHERE QBOARD_NO=#{qboardNo}
+	</select>
+	
+	<!-- qna게시판 업데이트 update -->	
+	<!-- QNA_CATEGORY=#{qnaCategory}, -->
+	<update id="updateBoard">
+			UPDATE QNA_BOARD SET
+													QNA_CATEGORY=#{qnaCategory},
+													QNA_TITLE=#{qnaTitle},
+													QNA_CONTENT=#{qnaContent}
+										WHERE QBOARD_NO=#{qboardNo}
+	</update>
+	
+	<!-- 첨부파일 업데이트 -->	
+	<update id="updateAttachment">
+			UPDATE QB_ATTACHMENT SET
+												ORIGINALFILENAME=#{originalfilename},
+												RENAMEDFILENAME=#{renamedfilename}
+												WHERE QBOARD_NO=#{qboardNo}
+	</update>
+	
+	<!-- 조회수 카운트 -->
+	<update id="updateReadCount">
+			UPDATE QNA_BOARD SET
+										BOARD_COUNT=BOARD_COUNT+1
+										WHERE QBOARD_NO=#{qboardNo}
+	</update>
+	
+	<!-- 댓글 등록  -->
+	<insert id="insertComment" parameterType="qbcomment">
+			INSERT INTO QB_COMMENT VALUES(
+												SEQ_QB_COMMENT_NO.NEXTVAL,
+												#{qboardNo},
+												#{qbCommentContent},
+												#{memberSq},
+												TO_CHAR(SYSDATE,'yyyy.mm.dd hh24:mi:ss'),
+												#{memberName}								
+												)
+	</insert>
+	
+	<!--댓글 등록시 답변상태 여부 변경 -->
+	<update id="insertCommentText" parameterType="_int">
+			UPDATE QNA_BOARD SET QNA_ANSWER_YN ='Y' WHERE QBOARD_NO=#{qboardNo}
+	</update>
+	
+	
+	<!--댓글 조회  --> 
+	<select id="selectQnacomment" resultType="qbcomment">
+			SELECT * FROM QB_COMMENT WHERE QBOARD_NO=#{qboardNo}
+							ORDER BY QBCOMMENT_DATE DESC
+	</select>
+	
+	
+	<!-- 댓글삭제 -->
+	<delete id="deletecomment" parameterType="_int">
+			DELETE QB_COMMENT WHERE QBOARD_COMMENT_NO=#{qboardCommentNo}
+	</delete>
+	
+	<!-- 댓글수정하기  -->
+	<update id="updateComment" parameterType="java.util.HashMap">
+			UPDATE QB_COMMENT SET
+										QB_COMMENT_CONTENT=#{qbCommentContent},
+										QBCOMMENT_DATE=TO_CHAR(SYSDATE,'yyyy.mm.dd hh24:mi:ss')
+										WHERE QBOARD_COMMENT_NO=#{qboardCommentNo}
+	</update>
+	
+	<!-- 댓글 수 조회 기능 mapper 3-->
+	<!-- 댓글카운트 갯수증가 +1 -->
+	<update id="updateCommentCount">
+			UPDATE QNA_BOARD SET
+										COMMENT_COUNT=COMMENT_COUNT+1
+										WHERE QBOARD_NO=#{qboardNo}
+	</update>
+
+	<!-- 댓글 정보 가져오기 -->
+	<select id="selectOneComment" parameterType="_int" resultType="qbcomment" >
+			SELECT QBOARD_NO FROM QB_COMMENT WHERE QBOARD_COMMENT_NO=#{qboardCommentNo}
+	</select>
+	
+	<!-- 댓글 갯수 감소 -1 -->
+	<update id="deleteCount">
+			UPDATE QNA_BOARD SET
+							COMMENT_COUNT=COMMENT_COUNT-1
+							WHERE QBOARD_NO=#{qboardNo}
+	</update>
+	
+	<!-- 리스트 이미지 불러오기 -->
+	<select id="selectImage" parameterType="_int"  resultType="qna_attachment">
+		SELECT* FROM QB_ATTACHMENT WHERE QBOARD_NO=#{qboardNo}
+	</select>
+	
+</mapper>

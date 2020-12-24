@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="communityBoard">
+
+	<!-- update, delete, insert
+					는 리턴타입이 int이기때문에 알아서 반영된다 
+					=>그래서 resultType = _int 가 생략한다				
+	-->
+	
+	<!-- select는 
+			반드시 resultType이 있다 
+												parameterType 은 입력될 데이터유형, 
+												resultType은 쿼리 후 결과를 위한 데이터		
+	-->
+
+<!-- 	<resultMap id="communnityBoard"
+		type="com.spring.itjobgo.community.model.vo.CommunityBoard">
+		<result column="BOARD_SQ" property="boardSq" />
+		<result column="BOARD_DIVISION" property="boardDivision" />
+		<result column="BOARD_CONTENT" property="boardContent" />
+		<result column="BOARD_DATE" property="boardDate" />
+		<result column="BOARD_ORIGINAL_FILEPATH" property="boardOriginalFilepath" />
+		<result column="BOARD_RENAME_FILEPATH" property="boardRenameFilepath" />
+		<result column="MEMBER_NUM" property="memberNum" />
+	</resultMap> -->
+		
+	<!-- 자유게시판 전체 조회 -->
+ 	<select id="selectBoardList" resultType="communityBoard">
+		SELECT * FROM COMMUNITY_BOARD ORDER BY BOARD_SQ DESC
+	</select> 
+
+	<!-- 자유게시판 글 작성 -->
+	<insert id ="insertBoard" parameterType="communityBoard">
+		INSERT INTO COMMUNITY_BOARD VALUES(
+											SEQ_COMMUNITY_BOARD_NO.NEXTVAL,
+											#{boardDivision},
+											#{boardTitle},
+											#{boardContent},
+											DEFAULT,
+											#{memberNum},
+											#{boardWriter},
+											1,
+											0
+											)
+	</insert>
+		
+	<!-- 글쓰기의 첨부파일 첨부 -->
+	<insert id="insertAttachment" parameterType="cb_attachment">
+	INSERT INTO CB_ATTACHMENT VALUES(
+											SEQ_CB_ATTACHMENT_NO.NEXTVAL,
+											#{boardSq},
+											#{originalfilename},
+											#{renamedfilename},
+											DEFAULT,
+											DEFAULT										
+											)
+		
+		<!-- 현재 boardSq의 시퀀스 번호를 알고 싶을때 curraval from dual을 이용해
+		selectKey를 설정한다 -->
+		<selectKey keyProperty="boardSq" resultType="_int" order="BEFORE">
+ 		SELECT SEQ_COMMUNITY_BOARD_NO.CURRVAL FROM DUAL
+  		</selectKey>
+	</insert>
+	
+	<!-- 첨부파일이 없는 게시글 첨부파일을 등록해 update 하기 -->
+	<insert id="insertAttachment2" parameterType="cb_attachment">
+	INSERT INTO CB_ATTACHMENT VALUES(
+											#{attachmentno},
+											#{boardSq},
+											#{originalfilename},
+											#{renamedfilename},
+											DEFAULT,
+											DEFAULT										
+											)
+	</insert>
+	
+	
+	<!-- 자유게시판 상세보기 -->
+	<select id="selectCommunityBoardOne"  parameterType="_int" 
+	resultType="communityBoard">
+		SELECT * FROM COMMUNITY_BOARD WHERE BOARD_SQ=#{boardSq}
+	
+	</select>
+	
+	<!-- 자유게시판 삭제하기 -->
+	<delete id="deleteBoard" parameterType="_int">
+		DELETE  FROM COMMUNITY_BOARD WHERE BOARD_SQ=#{boardSq}
+	</delete>
+	
+	<!-- 첨부파일 조회 -->
+	<select id="selectAttach" resultType="cb_attachment" parameterType="_int">
+		SELECT * FROM CB_ATTACHMENT WHERE BOARD_SQ=#{boardSq}
+	</select>
+	
+	<!-- 게시판 업데이트 update -->
+	<update id="updateBoard">
+		UPDATE COMMUNITY_BOARD SET 
+															BOARD_DIVISION=#{boardDivision},
+															BOARD_TITLE=#{boardTitle},
+															BOARD_CONTENT=#{boardContent}
+											WHERE BOARD_SQ=#{boardSq} 
+	</update>
+	
+	<!-- 첨부파일 업데이트 -->
+	<update id="updateAttachment">
+		UPDATE CB_ATTACHMENT SET
+														ORIGINALFILENAME=#{originalfilename},
+														RENAMEDFILENAME=#{renamedfilename}
+											WHERE BOARD_SQ=#{boardSq}
+													
+	</update>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateReadCount">
+		UPDATE COMMUNITY_BOARD SET
+												BOARD_COUNT=BOARD_COUNT+1
+												WHERE BOARD_SQ=#{boardSq}
+
+	</update>
+	
+	
+	<!-- 댓글 insert -->
+	<insert id="insertComment" parameterType="CB_COMMENT">
+		INSERT INTO CB_COMMENT VALUES(
+											SEQ_COMMUNITY_BOARD_COMMENT_NO.NEXTVAL,
+											#{cboardNo},
+											#{cbCommentContent},
+											#{memberSq},
+											TO_CHAR(SYSDATE,'yyyy.mm.dd hh24:mi:ss'),
+											#{memberName}							
+											)
+	</insert>
+	
+	<!-- 댓글 조회하기 -->
+	<select id="selectComment" resultType="CB_COMMENT">
+		SELECT * FROM CB_COMMENT WHERE CBOARD_NO=#{cboardNo}
+						ORDER BY CB_COMMENT_DATE DESC
+	</select>
+	
+	<!-- 댓글 삭제하기 -->
+	<delete id="deleteComment" parameterType="_int">
+		DELETE FROM CB_COMMENT WHERE CB_COMMENT_NO=#{cbCommentNo}
+	</delete>
+	
+	<!-- 댓글 수정하기 -->
+	<update id="updateComment" parameterType="map">
+		UPDATE CB_COMMENT SET
+												CB_COMMENT_CONTENT=#{cbCommentContent},
+												CB_COMMENT_DATE=TO_CHAR(SYSDATE,'yyyy.mm.dd hh24:mi:ss')
+												WHERE CB_COMMENT_NO=#{cbCommentNo}
+	</update>
+	
+	<!-- 댓글 갯수 증가 -->
+	<update id="updateCommentCount">
+			UPDATE COMMUNITY_BOARD SET
+												COMMENT_COUNT=COMMENT_COUNT+1
+												WHERE BOARD_SQ=#{cboardNo}
+	
+	
+	</update>
+	
+	<!-- 댓글 정보가져오기 -->
+	<select id="selectOneComment" parameterType="_int" resultType="CB_COMMENT" >
+		SELECT CBOARD_NO FROM CB_COMMENT WHERE CB_COMMENT_NO=#{cbCommentNo}
+	</select>
+	
+	<!-- 댓글 갯수 감소 -->
+	<update id="deleteCount">
+						UPDATE COMMUNITY_BOARD SET
+												COMMENT_COUNT=COMMENT_COUNT-1
+												WHERE BOARD_SQ=#{cboardNo}
+	</update>
+  		
+</mapper>

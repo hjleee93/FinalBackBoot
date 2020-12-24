@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		@Override
 	    public void addCorsMappings(CorsRegistry registry) {
 			 registry.addMapping("/**")
-             .allowedOrigins("http://openapi.work.go.kr/opi/opi/opia/wantedApi.do", "http://localhost:8082")
+             .allowedOrigins("http://rclass.iptime.org:9999/")
              .allowedMethods("GET", "POST");
 	    }
 	}

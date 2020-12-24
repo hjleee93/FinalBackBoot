@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -35,7 +36,7 @@ import com.spring.itjobgo.notice.model.service.NoticeService;
 import com.spring.itjobgo.notice.model.vo.Notice;
 import com.spring.itjobgo.notice.model.vo.NoticeAttachment;
 import com.spring.itjobgo.notice.model.vo.NoticeComment;
-
+@CrossOrigin(origins = "http://rclass.iptime.org:9999") 
 @RestController
 public class NoticeController {
 

@@ -17,6 +17,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.spring.itjobgo.ref.model.service.RefService;
 import com.spring.itjobgo.ref.model.vo.REF_SITE;
 import com.spring.itjobgo.ref.model.vo.REF_SITE_ATTACHMENT;
-
+@CrossOrigin(origins = "http://rclass.iptime.org:9999") 
 @RestController
 public class RefController {
 	@Autowired

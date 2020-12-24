@@ -21,6 +21,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -53,7 +54,7 @@ import com.spring.itjobgo.resume.model.vo.ResumeList;
 import com.spring.itjobgo.resume.model.vo.ResumeProject;
 import com.spring.itjobgo.resume.model.vo.ResumeSchool;
 import com.spring.itjobgo.resume.model.vo.ResumeWork;
-
+@CrossOrigin(origins = "http://rclass.iptime.org:9999") 
 @RestController
 public class ResumeController {
 

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -33,7 +34,7 @@ import com.spring.itjobgo.portfolio.model.service.PortfolioService;
 import com.spring.itjobgo.portfolio.model.vo.Attachment;
 import com.spring.itjobgo.portfolio.model.vo.Comment;
 import com.spring.itjobgo.portfolio.model.vo.Pboard;
-
+@CrossOrigin(origins = "http://rclass.iptime.org:9999")  
 @RestController
 public class PortfolioController {
 	@Autowired

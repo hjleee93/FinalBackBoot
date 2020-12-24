@@ -17,6 +17,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,7 @@ import com.spring.itjobgo.ItNews.model.service.ItNewsService;
 import com.spring.itjobgo.ItNews.model.vo.ItNews;
 import com.spring.itjobgo.ItNews.model.vo.ItnewsAttachment;
 import com.spring.itjobgo.ItNews.model.vo.ItnewsComment;
-
+@CrossOrigin(origins = "http://rclass.iptime.org:9999") 
 @RestController
 public class ItNewsController {
 

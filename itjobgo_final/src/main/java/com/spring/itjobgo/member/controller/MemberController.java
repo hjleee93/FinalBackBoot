@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,7 +44,7 @@ import com.spring.itjobgo.member.model.vo.Member;
 import com.spring.itjobgo.member.model.vo.MemberPhoto;
 import com.spring.itjobgo.member.model.vo.MemberScrap;
 import com.spring.itjobgo.security.service.SecurityService;
-
+@CrossOrigin(origins = "http://rclass.iptime.org:9999") 
 @RestController
 @RequestMapping("/member")
 public class MemberController {

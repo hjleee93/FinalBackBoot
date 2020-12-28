@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="resume">
 
-	<!-- 이력서 리스트 불러오기 -->
+<!-- 이력서 리스트 불러오기 -->
   <select id="selectResumeList" resultType="resume_list" parameterType="_int">
   	SELECT * FROM RESUMELIST WHERE MEMBER_NO=#{memberSq} ORDER BY RESUMELIST_NO DESC
   </select>

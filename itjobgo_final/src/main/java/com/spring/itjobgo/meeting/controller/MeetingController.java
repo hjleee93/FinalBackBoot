@@ -50,7 +50,7 @@ public class MeetingController {
 	@Autowired
 	private Logger logger;
 	//vue에서 보낸 첨부파일을 받기위한 설정
-	@RequestMapping(value="/meeting/enrollmeeting.do",method = RequestMethod.POST, consumes = { "multipart/form-data" })
+	@RequestMapping(value="/meeting/enrollmeeting",method = RequestMethod.POST, consumes = { "multipart/form-data" })
 	public String meetingFromEnd(@RequestParam Map param,@RequestBody MultipartFile[] upfile,HttpServletRequest request) {
 		String msg="";
 		System.out.println(param);	
@@ -93,21 +93,21 @@ public class MeetingController {
 		}
 		return msg;
 	}
-	@RequestMapping(value="meeting/meetingList.do" ,method = RequestMethod.GET)
+	@RequestMapping(value="meeting/meetingList" ,method = RequestMethod.GET)
 	public List<Mboard> meetingList()throws JsonMappingException,JsonGenerationException,IOException{
 		List<Mboard> list=service.selectMlist();
 		logger.debug("여기오면 매핑성공");
 		logger.debug(list.toString());
 		return list;
 	}
-	@RequestMapping(value="meeting/meetingendList.do",method=RequestMethod.GET)
+	@RequestMapping(value="meeting/meetingendList",method=RequestMethod.GET)
 	public List<Mboard>meetingendList(){
 		List<Mboard> list=service.selectendlist();
 		logger.debug(list.toString());
 		return list;
 	}
 	//모임을 클릭했을때 해당 모임정보를 리턴
-	@RequestMapping(value="meeting/meetinginfo{no}.do",method=RequestMethod.GET)
+	@RequestMapping(value="meeting/meetinginfo{no}",method=RequestMethod.GET)
 	public Mboard meetinginfo(@PathVariable int no)throws JsonMappingException,JsonGenerationException,IOException{
 		Mboard md=service.selectMb(no);
 		logger.debug(md.toString());
@@ -115,7 +115,7 @@ public class MeetingController {
 	}
 	//모임신청하는 로직
 	
-	@RequestMapping(value="meeting/applymeeting.do",method=RequestMethod.POST)
+	@RequestMapping(value="meeting/applymeeting",method=RequestMethod.POST)
 	public int applymeeting(@RequestParam(value="postion") String postion,@RequestParam int memberSq,@RequestParam int collabSq,@RequestParam int writerNo  ) throws ParseException {
 		Tmpapply tmp=new Tmpapply();
 		tmp.setMemberSq(memberSq);
@@ -168,7 +168,7 @@ public class MeetingController {
 		
 	}
 	//모임신청 취소
-	@RequestMapping(value="meeting/delapplymeeting.do",method=RequestMethod.POST)
+	@RequestMapping(value="meeting/delapplymeeting",method=RequestMethod.POST)
 	public int delapplymeeting(@RequestParam int memberSq,@RequestParam int collabSq) {
 		Tmpapply tmp=new Tmpapply();
 		tmp.setMemberSq(memberSq);
@@ -211,7 +211,7 @@ public class MeetingController {
 		
 		
 	}
-	@RequestMapping(value="meeting/meetingapply{email}.do",method=RequestMethod.GET)
+	@RequestMapping(value="meeting/meetingapply{email}",method=RequestMethod.GET)
 	public List  returntmpapply(@PathVariable String email) throws JsonMappingException,JsonGenerationException,IOException{
 		logger.debug(email);
 		//로그인한 이메일로 사용자 정보 확인
@@ -241,7 +241,7 @@ public class MeetingController {
 		}
 		return list2;
 	}
-	@RequestMapping(value="meeting/approve{no}.do",method=RequestMethod.GET)
+	@RequestMapping(value="meeting/approve{no}",method=RequestMethod.GET)
 	public void approvemeeting(@PathVariable int no) {
 		Tmpapply tmp=service.selectOneapply(no);
 		//번호로 해당 임시테이블에 있는 정보를 실제 신청완료한 테이블에 넣어준다.
@@ -272,7 +272,7 @@ public class MeetingController {
 		
 		
 	}
-	@RequestMapping(value="meeting/unapprove{no}.do",method=RequestMethod.GET)
+	@RequestMapping(value="meeting/unapprove{no}",method=RequestMethod.GET)
 	public void unapprovemeeting(@PathVariable int no) {
 		Tmpapply tmp=service.selectOneapply(no);
 		//번호로 해당 임시테이블에 있는 정보를 실제 신청완료한 테이블에 넣어준다.
@@ -284,7 +284,7 @@ public class MeetingController {
 		}//throws로 예외처리해야함
 		
 	}
-	@RequestMapping(value="meeting/approvelist{no}.do",method=RequestMethod.GET)
+	@RequestMapping(value="meeting/approvelist{no}",method=RequestMethod.GET)
 	public List approvelist(@PathVariable int no) {
 		logger.debug(Integer.toString(no));
 		//회원 번호로 신청한 모임목록을 가져오는 로직
@@ -305,7 +305,7 @@ public class MeetingController {
 		}
 		return list2;
 	}
-	@RequestMapping(value="meeting/mklist{memberSq}.do",method=RequestMethod.GET)
+	@RequestMapping(value="meeting/mklist{memberSq}",method=RequestMethod.GET)
 	public List retunmkmeeting(@PathVariable int memberSq) {
 		logger.debug(Integer.toString(memberSq));
 		List<Mboard> list =service.selectMklist(memberSq);
@@ -323,7 +323,7 @@ public class MeetingController {
 		logger.debug(list.toString());
 		return relist;
 	}
-	@RequestMapping(value="meeting/meetingdel{no}.do",method=RequestMethod.GET)
+	@RequestMapping(value="meeting/meetingdel{no}",method=RequestMethod.GET)
 	public void delmeeting(@PathVariable int no ,HttpServletRequest request,HttpServletResponse response) {
 		Mattachment mat=service.selectMat(no);
 		if(mat!=null) {
@@ -342,7 +342,7 @@ public class MeetingController {
 			int result=service.deletemeeting(no);
 		}
 	}
-	@RequestMapping(value="meeting/meetingupdate{no}.do",method=RequestMethod.GET)
+	@RequestMapping(value="meeting/meetingupdate{no}",method=RequestMethod.GET)
 	public List updatemeeting(@PathVariable int no) {
 		logger.debug(Integer.toString(no));
 		Mboard md=service.selectMb(no);
@@ -355,7 +355,7 @@ public class MeetingController {
 		
 		return list;
 	}
-	@RequestMapping(value="/meeting/updatemeeting.do",method = RequestMethod.POST, consumes = { "multipart/form-data" })
+	@RequestMapping(value="/meeting/updatemeeting",method = RequestMethod.POST, consumes = { "multipart/form-data" })
 	public void meetingUpdateEnd(@RequestParam Map param,@RequestBody MultipartFile[] upfile,HttpServletRequest request) {
 		
 		int mtno=Integer.valueOf((String) param.get("mtno"));
@@ -404,13 +404,13 @@ public class MeetingController {
 			
 
 	}
-	@RequestMapping(value="meeting/meetingcount{no}.do",method=RequestMethod.GET)
+	@RequestMapping(value="meeting/meetingcount{no}",method=RequestMethod.GET)
 	public Mcount returnmcount(@PathVariable int no) {
 		Mcount mc=service.joinmcount(no);
 		logger.debug(mc.toString());
 		return mc;
 	}
-	@RequestMapping(value="meeting/meetingenter{no}.do",method=RequestMethod.GET)
+	@RequestMapping(value="meeting/meetingenter{no}",method=RequestMethod.GET)
 	public List<Member> returnenter(@PathVariable int no){
 		//no은 모임 번호 모임 번호로 완료된 사람 불러 올 때 멤버 번호로 불러와서
 		List list=service.enterList(no);
@@ -420,7 +420,7 @@ public class MeetingController {
 	
 	//waitList.do
 	
-	@RequestMapping(value="meeting/waitList{no}.do",method=RequestMethod.GET)
+	@RequestMapping(value="meeting/waitList{no}",method=RequestMethod.GET)
 	public List waitList(@PathVariable int no){
 		List list = service.selectWaitList(no);
 		return list;

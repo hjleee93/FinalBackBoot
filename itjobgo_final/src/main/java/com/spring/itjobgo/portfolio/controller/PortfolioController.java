@@ -43,7 +43,7 @@ public class PortfolioController {
 	private Logger logger;
 
 	
-	@RequestMapping(value="/portfolio/portfolioenroll.do",method = RequestMethod.POST, consumes = { "multipart/form-data" })
+	@RequestMapping(value="/portfolio/portfolioenroll",method = RequestMethod.POST, consumes = { "multipart/form-data" })
 	//@ModelAttribute 생략가능  써주는것이 좋음 
 	public String portboard(Pboard pboard,@RequestParam(value="memberSq") int memberno,@RequestBody MultipartFile[] file,HttpServletRequest request) {
 		//로그인한 사용자의 키를 넣을거임
@@ -97,7 +97,7 @@ public class PortfolioController {
 		
 			
 	}
-	@RequestMapping(value="/portfolio/portfolioList.do",method = RequestMethod.GET)
+	@RequestMapping(value="/portfolio/portfolioList",method = RequestMethod.GET)
 	public List<Pboard> responsePboard()throws JsonMappingException,JsonGenerationException,IOException{
 		List<Pboard> list=service.selectListPboard();
 		for(Pboard a:list) {
@@ -107,7 +107,7 @@ public class PortfolioController {
 		return list;
 		
 	}
-	@RequestMapping(value="/portfolio/pboardinfo{pboardNo}.do",method = RequestMethod.GET)
+	@RequestMapping(value="/portfolio/pboardinfo{pboardNo}",method = RequestMethod.GET)
 	public Pboard pboardinfo(@PathVariable int pboardNo,HttpServletRequest request,HttpServletResponse response) 
 	throws JsonMappingException,JsonGenerationException,IOException{
 	
@@ -148,7 +148,7 @@ public class PortfolioController {
 		if(count==0) service.updatacommentNtext(pboardNo);
 		return bp;
 	}
-	@RequestMapping(value="/portfolio/pboarddel{no}.do",method = RequestMethod.POST)
+	@RequestMapping(value="/portfolio/pboarddel{no}",method = RequestMethod.POST)
 	public String pboarddel(@PathVariable int no,HttpServletRequest request) throws JsonMappingException,JsonGenerationException,IOException{
 		String msg="";
 		logger.debug("이메소드 수행");
@@ -179,7 +179,7 @@ public class PortfolioController {
 		logger.debug(msg);
 		return msg;	
 	}
-	@RequestMapping(value="/portfolio/pbaordupdate{no}.do",method = RequestMethod.GET)
+	@RequestMapping(value="/portfolio/pbaordupdate{no}",method = RequestMethod.GET)
 	public Attachment pboardupdate(@PathVariable int no) 
 			throws JsonMappingException,JsonGenerationException,IOException{
 				logger.debug("pbaordNo"+Integer.toString(no));
@@ -193,7 +193,7 @@ public class PortfolioController {
 				
 				
 			}
-	@RequestMapping(value="/portfolio/portfolioupdataend.do",method = RequestMethod.POST, consumes = { "multipart/form-data" })
+	@RequestMapping(value="/portfolio/portfolioupdataend",method = RequestMethod.POST, consumes = { "multipart/form-data" })
 	//@ModelAttribute 생략가능  써주는것이 좋음 
 	public String pboardUpdataEnd(Pboard pboard,@RequestBody(required = false) MultipartFile[]  filen,HttpServletRequest request) {
 			logger.debug("그냥 매핑테스트");
@@ -294,7 +294,7 @@ public class PortfolioController {
 		}
 	}
 	//댓글 작성
-	@RequestMapping(value="portfolio/comment.do",method =RequestMethod.POST)
+	@RequestMapping(value="portfolio/comment",method =RequestMethod.POST)
 	public void comment( Comment cm) {
 		
 		int result=service.insertComment(cm);
@@ -305,7 +305,7 @@ public class PortfolioController {
 	
 	}
 	//댓글 조회
-	@RequestMapping(value="portfolio/commentList{no}.do",method =RequestMethod.GET)
+	@RequestMapping(value="portfolio/commentList{no}",method =RequestMethod.GET)
 	public List<Comment> commentList(@PathVariable int no){
 		//해당 게시글 번호를 가져와서 게시글에 맞는 댓글 을 불러오는것
 		logger.debug("댓글 조회");
@@ -314,14 +314,14 @@ public class PortfolioController {
 		return list;
 	}
 	//댓글 삭제 
-	@RequestMapping(value="portfolio/commentdel{no}.do",method=RequestMethod.POST)
+	@RequestMapping(value="portfolio/commentdel{no}",method=RequestMethod.POST)
 	public void commentdel(@PathVariable int no) {
 		int result=service.deletecomment(no);
 		
 		
 	}
 	//댓글 업데이트
-	@RequestMapping(value="portfolio/updatecomment.do",method=RequestMethod.POST)
+	@RequestMapping(value="portfolio/updatecomment",method=RequestMethod.POST)
 	//public void commentupdate(String pcommentContent,int pcommentNo) {
 	public void commentupdate(@RequestBody Map param) {
 		logger.debug("param"+param);

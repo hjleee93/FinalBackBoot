@@ -65,7 +65,7 @@ public class ResumeController {
 	private Logger logger;
 	
 	@ResponseBody
-	@RequestMapping(value="resume/rboardList.do",method=RequestMethod.GET)
+	@RequestMapping(value="resume/rboardList",method=RequestMethod.GET)
 	public List<Rboard> selectRboardList() {
 		System.out.println("********이력서컨설팅 리스트 컨트롤러 *********");
 		List<Rboard> list=service.selectListRboard();
@@ -77,7 +77,7 @@ public class ResumeController {
 		return list;
 	}
 	
-	@RequestMapping(value="resume/rboardView/{rboardNo}.do",method=RequestMethod.GET)
+	@RequestMapping(value="resume/rboardView/{rboardNo}",method=RequestMethod.GET)
 	public Rboard selectRboard(@PathVariable int rboardNo,
 			HttpServletRequest request,HttpServletResponse response)
 					throws JsonMappingException,JsonGenerationException,IOException {
@@ -119,7 +119,7 @@ public class ResumeController {
 	}
 	
 	//첨부파일 표시
-	@RequestMapping(value="resume/rboardAttachment/{rboardNo}.do",method=RequestMethod.GET)
+	@RequestMapping(value="resume/rboardAttachment/{rboardNo}",method=RequestMethod.GET)
 	public RboardAttachment selectRboardAttachment(@PathVariable int rboardNo) {
 		
 		System.out.println("이력서 게시판 상세정보 첨부파일");
@@ -178,7 +178,7 @@ public class ResumeController {
 			}
 		}
 	
-	@RequestMapping(value="resume/resumeList/{memberSq}.do",method=RequestMethod.GET)
+	@RequestMapping(value="resume/resumeList/{memberSq}",method=RequestMethod.GET)
 	public List<ResumeList> selectResumeList(@PathVariable int memberSq) {
 		System.out.println("********이력서 리스트 컨트롤러 *********");
 		System.out.println(memberSq);
@@ -191,7 +191,7 @@ public class ResumeController {
 		return list;
 	}
 	
-	@RequestMapping(value="/resume/rboardEnroll.do",method = RequestMethod.POST, consumes = { "multipart/form-data" })
+	@RequestMapping(value="/resume/rboardEnroll",method = RequestMethod.POST, consumes = { "multipart/form-data" })
 
 	public String rboardEnroll(Rboard rboard,@RequestParam(value="memberSq") int memberno,
 			@RequestBody MultipartFile[] file,HttpServletRequest request) {
@@ -262,7 +262,7 @@ public class ResumeController {
 	}
 	
 	//이력서 컨설팅 게시판 수정
-	@RequestMapping(value="/resume/updateRboard.do", method=RequestMethod.POST, consumes= {"multipart/form-data"})
+	@RequestMapping(value="/resume/updateRboard", method=RequestMethod.POST, consumes= {"multipart/form-data"})
 		public String updateRboard(Rboard rboard, @RequestBody(required=false)
 			MultipartFile[] file, HttpServletRequest request) {
 		
@@ -322,7 +322,7 @@ public class ResumeController {
 		}
 	
 	//이력서 등록하기
-	@RequestMapping(value="/resume/insertResume.do",method = RequestMethod.POST, consumes = { "multipart/form-data" })
+	@RequestMapping(value="/resume/insertResume",method = RequestMethod.POST, consumes = { "multipart/form-data" })
 		public String insertResume(Resume resume, ResumeAbroad abroad, ResumeActivity activity,
 				ResumeLanguage language, ResumeLicense license, ResumeProject project, ResumeSchool school, 
 				ResumeWork work, ResumeList resumelist,
@@ -418,7 +418,7 @@ public class ResumeController {
 		return msg;
 	}
 	
-	@RequestMapping(value="resume/selectResume/{resumeNo}.do",method=RequestMethod.GET)
+	@RequestMapping(value="resume/selectResume/{resumeNo}",method=RequestMethod.GET)
 	public ResumeAll selectResume(ResumeAll resumeall, @PathVariable int resumeNo) {
 		System.out.println("********controller : 이력서 불러오기*********");
 		System.out.println("controller memberSq param : "+resumeNo);
@@ -454,7 +454,7 @@ public class ResumeController {
 	}
 	
 	
-	@RequestMapping(value="/resume/updateResume.do",method = RequestMethod.POST, consumes = { "multipart/form-data" })
+	@RequestMapping(value="/resume/updateResume",method = RequestMethod.POST, consumes = { "multipart/form-data" })
 	public String updateResume(Resume resume, ResumeAbroad abroad, ResumeActivity activity,
 			ResumeLanguage language, ResumeLicense license, ResumeProject project, ResumeSchool school, 
 			ResumeWork work, ResumeList resumelist,
@@ -553,7 +553,7 @@ public class ResumeController {
 }
 	
 	//이력서 삭제하기
-	@RequestMapping(value="resume/deleteResume/{resumeNo}.do",method=RequestMethod.GET)
+	@RequestMapping(value="resume/deleteResume/{resumeNo}",method=RequestMethod.GET)
 	public String delmeeting(@PathVariable int resumeNo ,HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("controller 이력서 삭제  들어옴");
 		System.out.println("controller resumeNo : "+resumeNo);
@@ -576,7 +576,7 @@ public class ResumeController {
 	}
 	
 	
-	@RequestMapping(value="/resume/insertconsult.do",method = RequestMethod.POST, consumes = { "multipart/form-data" })
+	@RequestMapping(value="/resume/insertconsult",method = RequestMethod.POST, consumes = { "multipart/form-data" })
 	public String insertResume(Consult consult, @RequestBody MultipartFile[] upfile,HttpServletRequest request) {
 	
 		System.out.println("***********resume in 등록 컨트롤러 *********");
@@ -653,7 +653,7 @@ public class ResumeController {
 		return msg;
 	}
 	//이력서 게시판 삭제하기
-		@RequestMapping(value="resume/deleteRboard/{rboardNo}.do",method=RequestMethod.GET)
+		@RequestMapping(value="resume/deleteRboard/{rboardNo}",method=RequestMethod.GET)
 		public String deleteRboard(@PathVariable int rboardNo, HttpServletRequest request) 
 				throws JsonMappingException,JsonGenerationException,IOException{
 			
@@ -698,7 +698,7 @@ public class ResumeController {
 		}
 		
 	//이력서 전문가 리스트
-	@RequestMapping(value="resume/Consultant.do",method=RequestMethod.GET)
+	@RequestMapping(value="resume/Consultant",method=RequestMethod.GET)
 		public List<ConsultAttachmentAll> selectConsultant() {
 			System.out.println("********이력서 전문가 신청 리스트 컨트롤러 *********");
 			List<ConsultAttachmentAll> list=service.selectConsultant();
@@ -711,7 +711,7 @@ public class ResumeController {
 		}
 	
 	//나의 이력서 전문가 리스트
-	@RequestMapping(value="resume/ConsultantOne/{memberSq}.do",method=RequestMethod.GET)
+	@RequestMapping(value="resume/ConsultantOne/{memberSq}",method=RequestMethod.GET)
 		public List<ConsultAttachmentAll> selectConsultantOne(@PathVariable int memberSq) {
 			System.out.println("********이력서 전문가 신청 리스트 컨트롤러 *********");
 			System.out.println("memberSq :"+memberSq);
@@ -725,7 +725,7 @@ public class ResumeController {
 		}
 	
 	//이력서 전문가 신청 첨부파일 표시
-	@RequestMapping(value="resume/consultAttachment/{consultNo}.do",method=RequestMethod.GET)
+	@RequestMapping(value="resume/consultAttachment/{consultNo}",method=RequestMethod.GET)
 	public ConsultAttachmentAll selectConsultAttachment(@PathVariable int consultNo) {
 		
 		System.out.println("이력서 게시판 상세정보 첨부파일");
@@ -785,7 +785,7 @@ public class ResumeController {
 		}
 	
 	// 이력서 전문가 승인
-	@RequestMapping(value = "resume/updateConsultApproval.do", method = RequestMethod.POST)
+	@RequestMapping(value = "resume/updateConsultApproval", method = RequestMethod.POST)
 	public String updateConsultApproval(@RequestParam(value="consultNo") int consultNo, @RequestParam(value="approval") String approval,
 			@RequestParam(value="memberSq") int memberSq) {
 		System.out.println("memberSq : " + consultNo);
@@ -847,7 +847,7 @@ public class ResumeController {
 	}
 	
    //댓글삭제
-   @RequestMapping(value="resume/deleteRboardComment/{rboardCommentNo}.do",method=RequestMethod.POST)
+   @RequestMapping(value="resume/deleteRboardComment/{rboardCommentNo}",method=RequestMethod.POST)
    public void deleteRboardComment(@PathVariable int rboardCommentNo) {
        
     	  int result=service.deleteRboardComment(rboardCommentNo);

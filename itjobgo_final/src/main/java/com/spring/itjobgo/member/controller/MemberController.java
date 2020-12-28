@@ -470,6 +470,7 @@ public class MemberController {
 	@RequestMapping(value = "/naverLogin", method = { RequestMethod.GET, RequestMethod.POST })
 	public void naverLogin(@RequestParam(value = "code") String code, @RequestParam(value = "state") String state,
 			HttpServletResponse httpServletResponse) throws Exception, IOException {
+		System.out.println("?????????");
 		String clientId = "aYgNgGmIwR3wysmlCfRd";// 애플리케이션 클라이언트 아이디값";
 		String naverClientSecret = "voZaFcwXXi";// 시크릿값
 		String apiURL;
@@ -545,12 +546,13 @@ public class MemberController {
 				access_token = createJWTToken(id, memberName, memberEmail);
 
 				logger.debug("memberEmail: " + memberEmail);
-				System.out.println(member);
+				
 
 				ObjectMapper objectMapper = new ObjectMapper();
 				Map param = objectMapper.convertValue(member, Map.class); // pojo->map
 
 				Member login = service.selectOneMember(param);// db에 저장된 회원인지 확인
+//				logger.debug("login !!!!" + login.toString());
 
 				if (login == null) {// 디비에 없으면insert
 
@@ -559,14 +561,14 @@ public class MemberController {
 					if (result > 0) { // 잘들어가면 페이지 이동
 						httpServletResponse.setHeader("access_token", access_token);// 헤더에 토큰 저장
 						httpServletResponse.sendRedirect(
-								"http://localhost:8081/naverLogin?token=" + access_token + "&email=" + memberEmail);
+								"http://localhost:8081/20AM_ITJOBGO_BOOT_FINAL/naverLogin?token=" + access_token + "&email=" + memberEmail);
 
 					}
 
 				} else {// 디비에 있으면그냥 바로 토큰 저장하고 이동
 					httpServletResponse.setHeader("access_token", access_token);// 헤더에 토큰 저장
 					httpServletResponse.sendRedirect(
-							"http://localhost:8081/naverLogin?token=" + access_token + "&email=" + memberEmail);
+							"http://localhost:8081/20AM_ITJOBGO_BOOT_FINAL/naverLogin?token=" + access_token + "&email=" + memberEmail);
 				}
 
 			}

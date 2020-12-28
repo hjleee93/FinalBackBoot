@@ -8,7 +8,7 @@
 	</insert>
 	<insert id="insertcount" parameterType="map">
 		insert into collab_count
-		values(#{collabsq},#{back},#{front},#{desgin},default,default,default)
+		values(#{collabsq},#{back},#{front},#{desgin},default,default,default,default)
 		<selectKey keyProperty="collabsq" resultType="_int"
 			order="BEFORE">
 			select seq_meet.currval from dual
@@ -26,12 +26,16 @@
 		<result column="collab_lang" property="collabLang"
 			typeHandler="strarr" />
 	</resultMap>
-	<select id="selectmList" resultMap="mboardmap">
-		select
-		collab_sq,collab_title,collab_writer,collab_simcontent,collab_back,collab_front,collab_desgin
-		from collab_board
-		order by collab_sq desc
-	</select>
+	<select id="selectmList" resultMap="mboardmap" >
+  	select C.collab_sq,C.collab_title,C.collab_writer,C.collab_simcontent,C.collab_back,C.collab_front,C.collab_desgin 
+  	from collab_board C join collab_count B on C.collab_sq=B.collab_sq where Trunc(C.collab_DEADLINE)>= sysdate and B.status='N'
+  	order by C.collab_sq desc
+  </select>
+  <select id="selectendList"  resultMap="mboardmap">
+  select C.collab_sq,C.collab_title,C.collab_writer,C.collab_simcontent,C.collab_back,C.collab_front,C.collab_desgin 
+  	from collab_board C join collab_count B on C.collab_sq=B.collab_sq where sysdate >= Trunc(C.collab_DEADLINE)   or B.status='Y'
+  	order by C.collab_sq desc
+  </select>
 	<select id="selectminfo" resultMap="mboardmap"
 		parameterType="_int">
 		select * from collab_board where collab_sq=#{no}
@@ -165,7 +169,40 @@
 		join member M on A.member_sq=M.member_sq where collab_sq=#{no}
 	</select>
 
+	<select id="selectWaitList" parameterType="_int"
+		resultMap="Tmpapply">
+		select
+		collab_board.collab_title,collab_board.collab_writer,tmp_apply.tmp_date,
+		tmp_apply.memberSq,collab_board.collab_Sq
+		from collab_board join
+		tmp_apply
+		on
+		collab_board.collab_sq=tmp_apply.collab_sq
+		<!-- where -->
+		<!-- tmp_apply.memberSq=#{no} -->
+	</select>
 
+	<resultMap type="com.spring.itjobgo.meeting.model.vo.Mboard"
+		id="Mboard">
+		<result column="COLLAB_SQ" property="collabSq" />
+		<result column="MEMBER_SQ" property="memberSq" />
+		<result column="COLLAB_TITLE" property="collabTitle" />
+		<result column="COLLAB_WRITER" property="collabWriter" />
+
+	</resultMap>
+
+
+	<resultMap id="Tmpapply"
+		type="com.spring.itjobgo.meeting.model.vo.Tmpapply">
+		<result column="membersq" property="memberSq" />
+		<result column="TMP_NO" property="tmpNo" />
+		<result column="POSTION" property="postion" />
+		<result column="WRITER_NO" property="writerNo" />
+		<result column="COLLAB_SQ" property="collabSq" />
+		<result column="TMP_DATE" property="tmpDate" />
+		<collection property="mboard" resultMap="Mboard" />
+
+	</resultMap>
 	
 	<update id="updatestatus"
 		parameterType="com.spring.itjobgo.meeting.model.vo.Tmpapply">
